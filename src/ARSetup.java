@@ -1,10 +1,13 @@
 import org.opencv.videoio.VideoCapture;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
+import ARPipeline.*;
 
 public class ARSetup {
 	
 	public Display display = null;
+	String SAMPLE_PATH = "E:/Primary/Files/College/Research/ar-system-02/src/samples/";
+	String filename = SAMPLE_PATH + "roomFloor01_270.avi";
 	
 	public ARSetup() {
 		
@@ -17,18 +20,15 @@ public class ARSetup {
 	public void start() {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		
-		String SAMPLE_PATH = "E:/Primary/Files/College/Research/ar-system-02/src/samples/";
-		String filename = SAMPLE_PATH + "loft01.avi";
-		
-		VideoCapture vc = new VideoCapture();
-		vc.open(filename);
-		
-		if (vc.isOpened()) {
-			Mat frame = new Mat();
-			vc.read(frame);
-			System.out.println(frame.get(0, 0)[0] + " " + frame.get(0, 0)[1] + " " + frame.get(0, 0)[2]);
-			Imgcodecs.imwrite("first frame.png", frame);
-		}
+		OfflineFrameBuffer ofb = new OfflineFrameBuffer(filename, true);
+		CanvasFrameBuffer cfb = new CanvasFrameBuffer(display.canvas);
+		ARPipeline pipeline = new TestPipeline(ofb, cfb);
+		pipeline.start();
 
+		println("Done.");
+	}
+	
+	public static void println(Object obj) {
+		System.out.println(obj);
 	}
 }
