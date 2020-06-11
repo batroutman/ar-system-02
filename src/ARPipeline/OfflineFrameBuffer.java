@@ -5,14 +5,15 @@ import java.util.ArrayList;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 
+
 public class OfflineFrameBuffer implements FrameBuffer {
 
 	protected ArrayList<Frame> frames = new ArrayList<Frame>();
 	public boolean YOnly = false;
 	protected VideoCapture vc = new VideoCapture();
 	protected String filename = "";
-	public int targetChunkSize = 900;
-	public long MAX_FRAMES_LOADED = 100;
+	public int targetChunkSize = 1000;
+	public long MAX_FRAMES_LOADED = 1000;
 	public long numFramesLoaded = 0;
 	
 	public OfflineFrameBuffer() {
@@ -52,6 +53,7 @@ public class OfflineFrameBuffer implements FrameBuffer {
 	
 	// convert the given Mat to Frame
 	public static Frame matToFrame(Mat mat, boolean YOnly) {
+		
 		int numRows = mat.rows();
 		int numCols = mat.cols();
 		byte [] y = new byte[numRows * numCols];
@@ -69,10 +71,10 @@ public class OfflineFrameBuffer implements FrameBuffer {
 				byte U = (byte)Math.floor(0.492 * (B - Y));
 				byte V = (byte)Math.floor(0.877 * (R - Y));
 				
-				y[row * numRows + col] = Y;
+				y[row * numCols + col] = Y;
 				if(!YOnly) {
-					u[row * numRows + col] = U;
-					v[row * numRows + col] = V;
+					u[row * numCols + col] = U;
+					v[row * numCols + col] = V;
 				}
 				
 			}

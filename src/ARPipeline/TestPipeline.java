@@ -47,10 +47,10 @@ public class TestPipeline extends ARPipeline{
 	protected void mainloop() {
 		Frame currentFrame = this.inputFrameBuffer.getCurrentFrame();
 		while (currentFrame != null) {
-			
 			this.outputFrameBuffer.pushFrame(currentFrame);
 			
 			currentFrame = this.inputFrameBuffer.getCurrentFrame();
+			
 		}
 	}
 	
